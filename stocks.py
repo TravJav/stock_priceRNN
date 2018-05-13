@@ -1,4 +1,3 @@
-#https://machinelearningmastery.com/sequence-classification-lstm-recurrent-neural-networks-python-keras/ TEXT INPIT
 import numpy as np
 import pandas as pd
 # training path
