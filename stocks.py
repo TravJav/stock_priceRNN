@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
 # training path
 training_data = pd.read_csv("Google_Stock_Price_Train.csv")
 
@@ -45,6 +48,9 @@ regressor.add(LSTM(units=50, return_sequences=True))
 # 20 perc of he neurons will be ignored or rather 10 neurons in this case
 regressor.add(Dropout(0.2))
 # fourth LTSM layer
+regressor.add(LSTM(units=50, return_sequences=True))
+# 20 perc of he neurons will be ignored or rather 10 neurons in this case
+regressor.add(Dropout(0.2))
 
 regressor.add(LSTM(units=50, return_sequences=False))
 # 20 perc of he neurons will be ignored or rather 10 neurons in this case
@@ -57,5 +63,12 @@ regressor.compile(optimizer='adam', loss='mean_squared_error')
 
 #fitting the RNN to the training set
 
-regressor.fit(x_train, y_train, epochs=100, batch_size=32)
-
+regressor.fit(x_train, y_train, epochs=80, batch_size=32)
+#save
+# serialize model to JSON
+model_json = regressor.to_json()
+with open("model.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+regressor.save_weights("model.h5")
+print("Saved model to disk")
